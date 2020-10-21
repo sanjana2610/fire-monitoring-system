@@ -1,0 +1,16 @@
+{
+  "name": "rajkumar/noise-monitoring-system",
+  "type": "project",
+  "require": {
+    "mikecao/flight": "^1.3",
+    "vlucas/phpdotenv": "^5.2",
+    "ext-json": "*",
+    "ext-pdo": "*"
+  },
+  "authors": [
+    {
+      "name": "Rajkumar S",
+      "email": "rajkumaar2304@icloud.com"
+    }
+  ]
+}
