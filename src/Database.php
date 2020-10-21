@@ -44,7 +44,7 @@ class Database
                 (`id` INT PRIMARY KEY AUTO_INCREMENT,
                 `mac_id` VARCHAR (255) NOT NULL,
                 `sound` INT NOT NULL,
-                `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (`mac_id`) REFERENCES nodes(`mac_id`)
                 )"
         ];
