@@ -8,6 +8,7 @@ require_once './src/Auth.php';
 
 use App\Auth;
 use App\Database;
+use Carbon\Carbon;
 
 if (file_exists('.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -83,11 +84,41 @@ Flight::route('POST /new-node', function () use ($db) {
     Flight::redirect('/');
 });
 
+Flight::route('/api/monitor/@id', function ($id) use ($db) {
+    if (Auth::verifyViewGraph($db, $id)) {
+        $query = $db->prepare(
+            "SELECT sound, created_at FROM (
+                            SELECT * FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 20 
+                        ) temp ORDER BY created_at"
+        );
+        $query->execute([$id]);
+        $data = $query->fetchAll(PDO::FETCH_OBJ);
+
+        $response = [];
+        foreach ($data as $datum) {
+            array_push($response, [
+                'x' => Carbon::createFromFormat(
+                    "Y-m-d H:i:s",
+                    $datum->created_at,
+                    'Asia/Kolkata')->timestamp,
+                'y' => (int)$datum->sound
+            ]);
+        }
+
+        Flight::json([
+            'data' => $response
+        ]);
+    } else {
+        Flight::json([
+            'message' => 'Unauthorized'
+        ], 401);
+    }
+});
 Flight::route('/monitor/@id', function ($id) use ($db) {
     if (Auth::verifyViewGraph($db, $id)) {
         $query = $db->prepare(
             "SELECT sound, created_at FROM (
-                            SELECT * FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 50 
+                            SELECT * FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 20 
                         ) temp ORDER BY created_at"
         );
         $query->execute([$id]);
@@ -97,11 +128,12 @@ Flight::route('/monitor/@id', function ($id) use ($db) {
         $query->execute([$id]);
         $node_name = $query->fetch(PDO::FETCH_OBJ)->name;
 
-        Flight::render('graph.php',[
+        Flight::render('graph.php', [
             'username' => Auth::getUsername(),
             'api_key' => Auth::getAPIKey($db, Auth::getUsername()),
             'node_name' => $node_name,
-            'data' => $data
+            'data' => $data,
+            'mac_id' => $id
         ]);
     } else {
         Flight::notFound();

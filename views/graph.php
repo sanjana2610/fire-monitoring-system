@@ -9,40 +9,45 @@ use Carbon\Carbon;
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 <script type="text/javascript">
     window.onload = function () {
-        $(function () {
-            $("#chartContainer").CanvasJSChart({
-                animationEnabled: true,
-                title: {
-                    text: "Decibel Levels"
-                },
-                axisX:{
-                    title: "Time"
-                },
-                axisY: {
-                    title: "Sound Level",
-                    suffix: ' dB'
-                },
-                data: [
-                    {
-                        type: "splineArea",
-                        dataPoints: [
-                            <?php if (!empty($data)) foreach ($data as $datum) { ?>
-                            <?php
-                            echo "{x: new Date(" .
-                                Carbon::createFromFormat(
-                                    "Y-m-d H:i:s",
-                                    $datum->created_at,
-                                    'Asia/Kolkata'
-                                )->timestamp .
-                                " * 1000), y: $datum->sound},\n";
-                            ?>
-                            <?php } ?>
-                        ]
-                    }
-                ]
-            });
-
+        $("#chartContainer").CanvasJSChart({
+            animationEnabled: true,
+            title: {
+                text: "Decibel Levels"
+            },
+            axisX: {
+                title: "Time"
+            },
+            axisY: {
+                title: "Sound Level",
+                suffix: ' dB'
+            },
+            data: [
+                {
+                    type: "splineArea",
+                    dataPoints: [
+                        <?php if (!empty($data)) foreach ($data as $datum) { ?>
+                        <?php
+                        echo "{x: new Date(" .
+                            Carbon::createFromFormat(
+                                "Y-m-d H:i:s",
+                                $datum->created_at,
+                                'Asia/Kolkata'
+                            )->timestamp .
+                            " * 1000), y: $datum->sound},\n";
+                        ?>
+                        <?php } ?>
+                    ]
+                }
+            ]
         });
+        setInterval(() => {
+            $.get("/api/monitor/<?php echo $mac_id ?? ''; ?>", function ({data}) {
+                data.map(row => row.x = new Date(row.x * 1000))
+                const chart = $("#chartContainer").CanvasJSChart();
+                chart.options.data[0].dataPoints = data;
+                chart.render()
+            });
+        }, 10000);
     }
 </script>
 <div>
