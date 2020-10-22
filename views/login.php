@@ -89,7 +89,7 @@ require_once 'head.php';
                 <div class="column right has-text-centered">
                     <h1 class="title is-4">Sign in now</h1>
                     <p class="description">Peace of mind at your fingertips</p>
-                    <?php if ($error) { ?>
+                    <?php if (isset($error)) { ?>
                         <div class="notification is-danger is-light">
                             <?php echo $error; ?>
                         </div>

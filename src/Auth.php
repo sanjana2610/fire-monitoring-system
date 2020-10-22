@@ -17,7 +17,10 @@ class Auth
 
     public static function isLoggedIn()
     {
-        return $_SESSION['isLoggedIn'];
+        if (!empty($_SESSION['isLoggedIn'])) {
+            return $_SESSION['isLoggedIn'];
+        }
+        return false;
     }
 
     public static function setLoggedIn($username)
@@ -34,6 +37,9 @@ class Auth
 
     public static function getUsername()
     {
-        return $_SESSION['username'];
+        if (!empty($_SESSION['username'])) {
+            return $_SESSION['username'];
+        }
+        return false;
     }
 }
