@@ -42,4 +42,13 @@ class Auth
         }
         return false;
     }
+
+    public static function getCurrentUserID($db)
+    {
+        $username = self::getUsername();
+        $query = $db->prepare("SELECT id FROM users WHERE username = ?");
+        $query->execute([$username]);
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        return $result->id;
+    }
 }

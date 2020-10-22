@@ -39,21 +39,27 @@ class Database
     public function loadMigrations()
     {
         $migrations = [
-            "CREATE TABLE IF NOT EXISTS `nodes`(`mac_id` VARCHAR(255) PRIMARY KEY, `name` VARCHAR(255))",
-            "CREATE TABLE IF NOT EXISTS `decibels` 
-                (`id` INT PRIMARY KEY AUTO_INCREMENT,
-                `mac_id` VARCHAR (255) NOT NULL,
-                `sound` INT NOT NULL,
-                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (`mac_id`) REFERENCES nodes(`mac_id`)
-                )",
             "create table if not exists users
                 (
                     id int auto_increment primary key,
                     username varchar(255) not null,
                     password text         not null,
                     constraint users_username_uindex unique (username)
-                );"
+                );",
+            "CREATE TABLE IF NOT EXISTS `nodes`
+                (
+                    `mac_id` VARCHAR(255) PRIMARY KEY,
+                    `name` VARCHAR(255),
+                    `user_id` INT,
+                    FOREIGN KEY (`user_id`) REFERENCES users(`id`)
+                )",
+            "CREATE TABLE IF NOT EXISTS `decibels` 
+                (`id` INT PRIMARY KEY AUTO_INCREMENT,
+                `mac_id` VARCHAR (255) NOT NULL,
+                `sound` INT NOT NULL,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (`mac_id`) REFERENCES nodes(`mac_id`)
+                )"
         ];
 
         $this->connection->beginTransaction();

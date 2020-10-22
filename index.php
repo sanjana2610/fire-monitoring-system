@@ -44,6 +44,30 @@ Flight::route('/', function () {
     Flight::render('dashboard.php', ['username' => Auth::getUsername()]);
 });
 
+Flight::route('GET /new-node', function () {
+    if (!Auth::isLoggedIn()) {
+        Flight::redirect('/login');
+        return;
+    }
+
+    Flight::render('new-node.php', ['username' => Auth::getUsername()]);
+});
+
+Flight::route('POST /new-node', function () use ($db) {
+    if (!Auth::isLoggedIn()) {
+        Flight::redirect('/login');
+        return;
+    }
+
+    $query = $db->prepare("INSERT INTO nodes VALUES(?,?,?)");
+    $query->execute([
+        htmlentities($_POST['mac_id'], ENT_QUOTES),
+        htmlentities($_POST['name'], ENT_QUOTES),
+        Auth::getCurrentUserID($db)
+    ]);
+    Flight::redirect('/');
+});
+
 Flight::route('/logout', function () {
     Auth::logout();
     Flight::redirect('/');
