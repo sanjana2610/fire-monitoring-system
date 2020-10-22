@@ -35,13 +35,28 @@ Flight::route('/api/post-data', function () use ($db) {
     }
 });
 
-Flight::route('/', function () {
+Flight::route('/', function () use ($db) {
     if (!Auth::isLoggedIn()) {
         Flight::redirect('/login');
         return;
     }
 
-    Flight::render('dashboard.php', ['username' => Auth::getUsername()]);
+    $query = $db->prepare("SELECT * FROM nodes WHERE user_id = ? ORDER BY name");
+    $query->execute([Auth::getCurrentUserID($db)]);
+    $nodes = $query->fetchAll(PDO::FETCH_OBJ);
+
+    foreach ($nodes as $idx => $node) {
+        $query = $db->prepare(
+            "SELECT created_at FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 1"
+        );
+        $query->execute([$node->mac_id]);
+        $nodes[$idx]->lastUpdated = $query->fetch(PDO::FETCH_OBJ)->created_at;
+    }
+
+    Flight::render('dashboard.php', [
+        'username' => Auth::getUsername(),
+        'nodes' => $nodes
+    ]);
 });
 
 Flight::route('GET /new-node', function () {
