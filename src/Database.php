@@ -46,7 +46,14 @@ class Database
                 `sound` INT NOT NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (`mac_id`) REFERENCES nodes(`mac_id`)
-                )"
+                )",
+            "create table if not exists users
+                (
+                    id int auto_increment primary key,
+                    username varchar(255) not null,
+                    password text         not null,
+                    constraint users_username_uindex unique (username)
+                );"
         ];
 
         $this->connection->beginTransaction();
