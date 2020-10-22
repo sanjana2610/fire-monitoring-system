@@ -42,6 +42,12 @@
                 </svg>
                 Add a new node
             </a>
+            <a class="navbar-item" href="#" role="button" onclick="Swal.fire('Here\'s your API key','<?php echo $api_key ?? 'N/A';  ?>','info')">
+                <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-key-fill mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+                API Key
+            </a>
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     <svg

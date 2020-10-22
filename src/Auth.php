@@ -15,6 +15,14 @@ class Auth
         return !empty($result->count);
     }
 
+    public static function verifyAPI($db, $mac_id, $token)
+    {
+        $query = $db->prepare("SELECT api_key FROM users WHERE id = (SELECT user_id FROM nodes WHERE mac_id = ?)");
+        $query->execute([$mac_id]);
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        return !empty($token) && !empty($result->api_key) && hash_equals($token, $result->api_key);
+    }
+
     public static function isLoggedIn()
     {
         if (!empty($_SESSION['isLoggedIn'])) {
@@ -50,5 +58,14 @@ class Auth
         $query->execute([$username]);
         $result = $query->fetch(PDO::FETCH_OBJ);
         return $result->id;
+    }
+
+    public static function getAPIKey($db, $username)
+    {
+        $username = self::getUsername();
+        $query = $db->prepare("SELECT api_key FROM users WHERE username = ?");
+        $query->execute([$username]);
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        return $result->api_key;
     }
 }

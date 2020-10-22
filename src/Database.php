@@ -44,6 +44,7 @@ class Database
                     id int auto_increment primary key,
                     username varchar(255) not null,
                     password text         not null,
+                    api_key text default (md5(rand())),
                     constraint users_username_uindex unique (username)
                 );",
             "CREATE TABLE IF NOT EXISTS `nodes`

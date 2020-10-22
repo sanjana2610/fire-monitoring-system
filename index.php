@@ -17,20 +17,21 @@ if (file_exists('.env')) {
 $db = new Database();
 $db = $db->getConnection();
 
-Flight::route('/api/post-data', function () use ($db) {
+Flight::route('POST /api/add-sound-level', function () use ($db) {
     header('content-type: application/json');
-    if (hash_equals($_GET['API_TOKEN'], $_ENV['API_TOKEN'])) {
+    $data = $_POST;
+    if (Auth::verifyAPI($db, $data['mac_id'], $data['token'])) {
         $query = $db->prepare("INSERT INTO decibels(mac_id, sound) VALUES(?,?)");
         $query->execute([
-            htmlspecialchars($_GET['MAC_ID'], ENT_QUOTES),
-            htmlspecialchars($_GET['SOUND'], ENT_QUOTES)
+            htmlspecialchars($data['mac_id'], ENT_QUOTES),
+            htmlspecialchars($data['sound'], ENT_QUOTES)
         ]);
         echo json_encode([
             'message' => 'Decibels posted successfully'
         ]);
     } else {
         echo json_encode([
-            'message' => 'API Token error'
+            'message' => 'Authentication failed'
         ]);
     }
 });
@@ -55,17 +56,21 @@ Flight::route('/', function () use ($db) {
 
     Flight::render('dashboard.php', [
         'username' => Auth::getUsername(),
+        'api_key' => Auth::getAPIKey($db, Auth::getUsername()),
         'nodes' => $nodes
     ]);
 });
 
-Flight::route('GET /new-node', function () {
+Flight::route('GET /new-node', function () use ($db) {
     if (!Auth::isLoggedIn()) {
         Flight::redirect('/login');
         return;
     }
 
-    Flight::render('new-node.php', ['username' => Auth::getUsername()]);
+    Flight::render('new-node.php', [
+        'username' => Auth::getUsername(),
+        'api_key' => Auth::getAPIKey($db, Auth::getUsername()),
+    ]);
 });
 
 Flight::route('POST /new-node', function () use ($db) {
