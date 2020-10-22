@@ -18,7 +18,6 @@ $db = new Database();
 $db = $db->getConnection();
 
 Flight::route('POST /api/add-sound-level', function () use ($db) {
-    header('content-type: application/json');
     $data = $_POST;
     if (Auth::verifyAPI($db, $data['mac_id'], $data['token'])) {
         $query = $db->prepare("INSERT INTO decibels(mac_id, sound) VALUES(?,?)");
@@ -26,13 +25,9 @@ Flight::route('POST /api/add-sound-level', function () use ($db) {
             htmlspecialchars($data['mac_id'], ENT_QUOTES),
             htmlspecialchars($data['sound'], ENT_QUOTES)
         ]);
-        echo json_encode([
-            'message' => 'Decibels posted successfully'
-        ]);
+        Flight::json(['message' => 'Decibels posted successfully']);
     } else {
-        echo json_encode([
-            'message' => 'Authentication failed'
-        ]);
+        Flight::json(['message' => 'Authentication failed'], 401);
     }
 });
 
@@ -86,6 +81,31 @@ Flight::route('POST /new-node', function () use ($db) {
         Auth::getCurrentUserID($db)
     ]);
     Flight::redirect('/');
+});
+
+Flight::route('/monitor/@id', function ($id) use ($db) {
+    if (Auth::verifyViewGraph($db, $id)) {
+        $query = $db->prepare(
+            "SELECT sound, created_at FROM (
+                            SELECT * FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 50 
+                        ) temp ORDER BY created_at"
+        );
+        $query->execute([$id]);
+        $data = $query->fetchAll(PDO::FETCH_OBJ);
+
+        $query = $db->prepare("SELECT name FROM nodes WHERE mac_id = ?");
+        $query->execute([$id]);
+        $node_name = $query->fetch(PDO::FETCH_OBJ)->name;
+
+        Flight::render('graph.php',[
+            'username' => Auth::getUsername(),
+            'api_key' => Auth::getAPIKey($db, Auth::getUsername()),
+            'node_name' => $node_name,
+            'data' => $data
+        ]);
+    } else {
+        Flight::notFound();
+    }
 });
 
 Flight::route('/logout', function () {

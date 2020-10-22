@@ -23,6 +23,14 @@ class Auth
         return !empty($token) && !empty($result->api_key) && hash_equals($token, $result->api_key);
     }
 
+    public static function verifyViewGraph($db, $mac_id)
+    {
+        $query = $db->prepare("SELECT username FROM users WHERE id = (SELECT user_id FROM nodes WHERE mac_id = ?)");
+        $query->execute([$mac_id]);
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        return !empty($mac_id) && !empty($result->username) && hash_equals(self::getUsername(), $result->username);
+    }
+
     public static function isLoggedIn()
     {
         if (!empty($_SESSION['isLoggedIn'])) {
@@ -48,7 +56,7 @@ class Auth
         if (!empty($_SESSION['username'])) {
             return $_SESSION['username'];
         }
-        return false;
+        return null;
     }
 
     public static function getCurrentUserID($db)
