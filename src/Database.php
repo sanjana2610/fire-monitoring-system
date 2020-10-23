@@ -44,9 +44,9 @@ class Database
                     id int auto_increment primary key,
                     username varchar(255) not null,
                     password text         not null,
-                    api_key text default (md5(rand())),
+                    api_key text not null,
                     constraint users_username_uindex unique (username)
-                );",
+                )",
             "CREATE TABLE IF NOT EXISTS `nodes`
                 (
                     `mac_id` VARCHAR(255) PRIMARY KEY,
