@@ -23,7 +23,7 @@ require_once 'nav.php';
             <?php foreach ($nodes as $node) { ?>
                 <div class="column is-4">
                     <div class="card">
-                        <header class="card-header">
+                        <header class="card-header has-background-info-light">
                             <div class="card-header-title">
                                 <p class="is-size-3"><?php echo $node->name; ?></p>
                             </div>
@@ -40,7 +40,7 @@ require_once 'nav.php';
                                 </div>
                             </div>
                         </div>
-                        <footer class="card-footer">
+                        <footer class="card-footer has-background-link-light">
                             <div class="column ml-3">
                                 <a class="button is-primary is-rounded" role="button"
                                    href="/monitor/<?php echo $node->mac_id; ?>">

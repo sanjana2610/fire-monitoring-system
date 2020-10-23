@@ -4,7 +4,7 @@ require_once 'head.php';
 <style>
     :root {
         --brandColor: hsl(31, 92%, 40%);
-        --background: rgb(247, 247, 247);
+        --background: rgb(236, 236, 236);
         --textDark: hsla(0, 0%, 0%, 0.66);
         --textLight: hsla(0, 0%, 0%, 0.33);
     }
@@ -23,6 +23,7 @@ require_once 'head.php';
         margin-top: 5rem;
         background: white;
         border-radius: 10px;
+        box-shadow: 10px 10px grey;
     }
 
     .left,
