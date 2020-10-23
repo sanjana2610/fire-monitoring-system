@@ -47,7 +47,7 @@ Flight::route('/', function () use ($db) {
             "SELECT created_at FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 1"
         );
         $query->execute([$node->mac_id]);
-        $nodes[$idx]->lastUpdated = $query->fetch(PDO::FETCH_OBJ)->created_at;
+        $nodes[$idx]->lastUpdated = $query->fetch(PDO::FETCH_OBJ)->created_at ?? 'N/A';
     }
 
     Flight::render('dashboard.php', [
