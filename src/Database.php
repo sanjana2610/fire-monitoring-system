@@ -60,7 +60,8 @@ class Database
                 `sound` INT NOT NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (`mac_id`) REFERENCES nodes(`mac_id`)
-                )"
+                )",
+            "SET time_zone = '+5:30'"
         ];
 
         $this->connection->beginTransaction();
