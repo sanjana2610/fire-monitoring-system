@@ -18,15 +18,15 @@ if (file_exists('.env')) {
 $db = new Database();
 $db = $db->getConnection();
 
-Flight::route('POST /api/add-sound-level', function () use ($db) {
+Flight::route('POST /api/add-fire-level', function () use ($db) {
     $data = $_POST;
     if (Auth::verifyAPI($db, $data['mac_id'], $data['token'])) {
-        $query = $db->prepare("INSERT INTO decibels(mac_id, sound) VALUES(?,?)");
+        $query = $db->prepare("INSERT INTO fires(mac_id, fire) VALUES(?,?)");
         $query->execute([
             htmlspecialchars($data['mac_id'], ENT_QUOTES),
-            htmlspecialchars($data['sound'], ENT_QUOTES)
+            htmlspecialchars($data['fire'], ENT_QUOTES)
         ]);
-        Flight::json(['message' => 'Decibels posted successfully']);
+        Flight::json(['message' => 'Values posted successfully']);
     } else {
         Flight::json(['message' => 'Authentication failed'], 401);
     }
@@ -44,7 +44,7 @@ Flight::route('/', function () use ($db) {
 
     foreach ($nodes as $idx => $node) {
         $query = $db->prepare(
-            "SELECT created_at FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 1"
+            "SELECT created_at FROM fires WHERE mac_id = ? ORDER BY created_at DESC LIMIT 1"
         );
         $query->execute([$node->mac_id]);
         $nodes[$idx]->lastUpdated = $query->fetch(PDO::FETCH_OBJ)->created_at ?? 'N/A';
@@ -87,8 +87,8 @@ Flight::route('POST /new-node', function () use ($db) {
 Flight::route('/api/monitor/@id', function ($id) use ($db) {
     if (Auth::verifyViewGraph($db, $id)) {
         $query = $db->prepare(
-            "SELECT sound, created_at FROM (
-                            SELECT * FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 20 
+            "SELECT fire, created_at FROM (
+                            SELECT * FROM fires WHERE mac_id = ? ORDER BY created_at DESC LIMIT 20 
                         ) temp ORDER BY created_at"
         );
         $query->execute([$id]);
@@ -101,7 +101,7 @@ Flight::route('/api/monitor/@id', function ($id) use ($db) {
                     "Y-m-d H:i:s",
                     $datum->created_at,
                     'Asia/Kolkata')->timestamp,
-                'y' => (int)$datum->sound
+                'y' => (int)$datum->fire
             ]);
         }
 
@@ -117,8 +117,8 @@ Flight::route('/api/monitor/@id', function ($id) use ($db) {
 Flight::route('/monitor/@id', function ($id) use ($db) {
     if (Auth::verifyViewGraph($db, $id)) {
         $query = $db->prepare(
-            "SELECT sound, created_at FROM (
-                            SELECT * FROM decibels WHERE mac_id = ? ORDER BY created_at DESC LIMIT 20 
+            "SELECT fire, created_at FROM (
+                            SELECT * FROM fires WHERE mac_id = ? ORDER BY created_at DESC LIMIT 20 
                         ) temp ORDER BY created_at"
         );
         $query->execute([$id]);

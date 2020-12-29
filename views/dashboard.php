@@ -3,7 +3,7 @@ require_once 'head.php';
 require_once 'nav.php';
 ?>
 <div>
-    <section class="hero is-bold is-info">
+    <section class="hero is-bold is-danger">
         <div class="hero-body">
             <div class="container columns">
                 <h1 class="title column is-8">
@@ -23,7 +23,7 @@ require_once 'nav.php';
             <?php foreach ($nodes as $node) { ?>
                 <div class="column is-4">
                     <div class="card">
-                        <header class="card-header has-background-info-light">
+                        <header class="card-header has-background-danger-light">
                             <div class="card-header-title">
                                 <p class="is-size-3"><?php echo $node->name; ?></p>
                             </div>
@@ -40,11 +40,11 @@ require_once 'nav.php';
                                 </div>
                             </div>
                         </div>
-                        <footer class="card-footer has-background-link-light">
+                        <footer class="card-footer has-background-danger-light">
                             <div class="column ml-3">
-                                <a class="button is-primary is-rounded" role="button"
+                                <a class="button is-danger is-rounded" role="button"
                                    href="/monitor/<?php echo $node->mac_id; ?>">
-                                    <span>View graph</span>
+                                    <span>graph</span>
                                 </a>
                             </div>
                         </footer>

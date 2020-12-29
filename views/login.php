@@ -23,7 +23,7 @@ require_once 'head.php';
         margin-top: 5rem;
         background: white;
         border-radius: 10px;
-        box-shadow: 10px 10px grey;
+        box-shadow: 5px 10px 10px 5px #737272;
     }
 
     .left,
@@ -83,13 +83,12 @@ require_once 'head.php';
         <div class="column is-8 is-offset-2 register">
             <div class="columns">
                 <div class="column left">
-                    <h1 class="title is-1">Noise Monitoring System</h1>
-                    <h2 class="subtitle colored is-4">Get hold of the decibels.</h2>
-                    <p>Be the first to know of a noise issue at your place and protect against damage.</p>
+                    <h1 class="title is-1">Fire Alarm System</h1>
+                    <p>Be the first to know to know about fire at your place and protect against damage.</p>
                 </div>
                 <div class="column right has-text-centered">
                     <h1 class="title is-4">Sign in now</h1>
-                    <p class="description">Peace of mind at your fingertips</p>
+                    <p class="description">We watch your home :))</p>
                     <?php if (isset($error)) { ?>
                         <div class="notification is-danger is-light">
                             <?php echo $error; ?>
@@ -111,9 +110,9 @@ require_once 'head.php';
                                 </label>
                             </div>
                         </div>
-                        <button class="button is-block is-info is-fullwidth is-medium">Login</button>
+                        <button class="button is-block is-danger is-fullwidth is-medium ">Login</button>
                         <br/>
-                        <small>&copy; Noise Monitoring System | <?php echo date('Y'); ?></small>
+                        <small>&copy; Fire Alarm System | <?php echo date('Y'); ?></small>
                     </form>
                 </div>
             </div>

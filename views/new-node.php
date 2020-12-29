@@ -3,7 +3,7 @@ require_once 'head.php';
 require_once 'nav.php';
 ?>
 <div>
-    <section class="hero is-info is-bold">
+    <section class="hero is-danger is-bold">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
@@ -38,7 +38,7 @@ require_once 'nav.php';
 
             <div class="field">
                 <div class="control has-text-centered">
-                    <button class="button is-normal is-link is-rounded is-fullwidth" type="submit">
+                    <button class="button is-normal is-danger is-rounded " type="submit">
                         Submit
                     </button>
                 </div>

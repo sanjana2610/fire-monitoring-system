@@ -1,14 +1,7 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
-            <img
-                    class="mr-1"
-                    src="../images/logo.svg"
-                    width="30"
-                    height="28"
-                    alt="Website logo"
-            />
-            <h1 class="subtitle">Noise Monitoring System</h1>
+            <h1 class="subtitle">Fire Alarm System</h1>
         </a>
 
         <a
@@ -26,6 +19,13 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end mr-2">
+            <a class="navbar-item" href="/">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                </svg>
+                Home
+            </a>
             <a class="navbar-item" href="/new-node">
                 <svg
                         width="1em"

@@ -12,18 +12,17 @@ use Carbon\Carbon;
         $("#chartContainer").CanvasJSChart({
             animationEnabled: true,
             title: {
-                text: "Decibel Levels"
+                text: "Fire Levels"
             },
             axisX: {
                 title: "Time"
             },
             axisY: {
-                title: "Sound Level",
-                suffix: ' dB'
+                title: "Fire Level",
             },
             data: [
                 {
-                    type: "splineArea",
+                    type: "stepLine",
                     dataPoints: [
                         <?php if (!empty($data)) foreach ($data as $datum) { ?>
                         <?php
@@ -33,7 +32,7 @@ use Carbon\Carbon;
                                 $datum->created_at,
                                 'Asia/Kolkata'
                             )->timestamp .
-                            " * 1000), y: $datum->sound},\n";
+                            " * 1000), y: $datum->fire},\n";
                         ?>
                         <?php } ?>
                     ]
@@ -51,7 +50,7 @@ use Carbon\Carbon;
     }
 </script>
 <div>
-    <section class="hero is-bold is-info mb-2">
+    <section class="hero is-bold is-danger mb-2">
         <div class="hero-body">
             <div class="container columns">
                 <h1 class="title column is-8">

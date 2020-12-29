@@ -54,10 +54,10 @@ class Database
                     `user_id` INT,
                     FOREIGN KEY (`user_id`) REFERENCES users(`id`)
                 )",
-            "CREATE TABLE IF NOT EXISTS `decibels` 
+            "CREATE TABLE IF NOT EXISTS `fires` 
                 (`id` INT PRIMARY KEY AUTO_INCREMENT,
                 `mac_id` VARCHAR (255) NOT NULL,
-                `sound` INT NOT NULL,
+                `fire` INT NOT NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (`mac_id`) REFERENCES nodes(`mac_id`)
                 )",
